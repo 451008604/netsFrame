@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/451008604/nets/config"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"io"
@@ -16,19 +17,11 @@ import (
 var jsonsPath = "./config/jsons/"
 
 type GlobalConf struct {
-	Debug            bool
-	AppName          string
-	Version          string
-	MaxPackSize      int
-	MaxConn          int
-	WorkerPoolSize   int
-	WorkerTaskMaxLen int
-	MaxMsgChanLen    int
-	ProtocolIsJson   bool
-	ServerTCP        Server
-	ServerWS         Server
-	Redis            Database
-	Mysql            Database
+	config.ServerConf
+	Debug   bool
+	Version string
+	Redis   Database
+	Mysql   Database
 }
 
 type Server struct {
@@ -77,7 +70,9 @@ func initServerConfig(remoteAddress string) {
 // 解析配置内容到结构体
 func loadServerConfig() {
 	logs.PrintLogErr(viper.Unmarshal(&conf))
+	logs.PrintLogErr(viper.Unmarshal(&conf.ServerConf))
 	logs.SetPrintMode(conf.Debug)
+	config.SetServerConf(conf.ServerConf)
 	logs.PrintLogInfo(fmt.Sprintf("服务配置参数：%v", viper.AllSettings()))
 }
 

@@ -19,6 +19,7 @@ func main() {
 	network.GetInstanceConnManager().OnConnClose(logic.OnConnectionClose)
 
 	// 开始监听服务
+	common.InitServer()
 	common.GetServerTCP().Listen()
 	common.GetServerWS().Listen()
 

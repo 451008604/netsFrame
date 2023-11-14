@@ -12,7 +12,7 @@ type staticModule struct {
 	serverWS  iface.IServer // 服务进程模块
 }
 
-func init() {
+func InitServer() {
 	module.serverTCP = network.NewServerTCP()
 	module.serverWS = network.NewServerWS()
 }
